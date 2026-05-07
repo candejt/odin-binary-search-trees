@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import Node from "./node.js";
 
 export default class Tree {
@@ -80,7 +79,7 @@ export default class Tree {
       node.data = this.minValue(node.right);
       node.right = this.deleteItem(node.data, node.right);
     }
-    
+
     return node;
   }
 
@@ -93,7 +92,26 @@ export default class Tree {
     return min;
   }
 
-  levelOrderForEach(callback) {}
+  levelOrderForEach(callback) {
+    if (!callback){
+      throw new Error("A callback is required");
+    }
+    if(this.root === null) return;
+
+    const queue = [this.root];
+    while (queue.length > 0){
+      const currentNode = queue.shift();
+
+      callback(currentNode.data);
+
+      if(currentNode.left !== null){
+        queue.push(currentNode.left);
+      }
+      if(currentNode.right !== null){
+        queue.push(currentNode.right);
+      }
+    }
+  }
 
   inOrderForEach(callback) {}
 
@@ -110,19 +128,10 @@ export default class Tree {
   rebalance() {}
 }
 
-/*const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-};
 
-const miArbol = new Tree([1, 7, 4, 23, 8, 9, 3, 5, 67, 6345, 324]);
+/*const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const tree = new Tree(array);
 
-prettyPrint(miArbol.root);*/
+tree.levelOrderForEach((value) => {
+  console.log("Reading value: " + value);
+});*/
